@@ -1,0 +1,420 @@
+---
+title: "Introduction to Modern Statistics for Modern Biology"
+output:
+  learnr::tutorial:
+    progressive: true
+    version: 1.0
+subtitle: |
+  | ![](https://raw.githubusercontent.com/C-MOOR/rnaseq/master/assets/styling/cmoor_logo_notext.png){width=60%}
+  | [Get Help](https://ciwemb.slack.com)
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(splatter)
+library(scater)
+
+tutorial_options(exercise.completion=TRUE)
+knitr::opts_chunk$set(echo = FALSE)
+options(scipen=5)
+
+group.prob <- c( 0.25, 0.25, 0.25, 0.25 )
+de.prob <- c( 0.1, 0.1, 0.1, 0.1 )
+
+sim.groups <- splatSimulate( 
+  method="groups", group.prob=group.prob, 
+  de.prob=de.prob, seed=712777
+)
+
+sim.groups <- normalize( sim.groups )
+```
+
+```{r}
+# Extract the tutorial version from the YAML data and store it so we can print it using inline r code below.  This can't be done directly inline because the code for extracting the YAML data uses backticks
+tv <- rmarkdown::metadata$output$`learnr::tutorial`$version
+```
+
+## Welcome! {.splashpage}
+
+### Introduction: Modern Statistics for Modern Biology (version `r tv`)
+
+This tutorial introduces the **Modern Statistics for Modern Biology** online learning track that teaches how to do biological data science with R.  Based on the free [Modern Statistics for Modern Biology](https://bios221.stanford.edu/book) website, this track makes heavy use of simulations to understand biological data.  While the authors "assume no prior training in statistics" they assume "some familiarity with R and willingness to engage in mathematical and analytical thinking"[(ref)](http://web.stanford.edu/class/bios221/book/introduction.html). Today you will see how the curriculum is organized and whether this is the right track for you.  In the next tutorial you will begin your hands-on R, RStudio, and R Notebooks learning.
+
+![](http://web.stanford.edu/class/bios221/book/images/MSFMB-Cover2-compressed.jpg){width=30%}
+
+#### Authors:
+
+* Xiaobin Zheng
+* [Katherine Cox](https://c-moor.github.io/portfolio/coxkatherine/)
+* Frederick Tan
+
+### Learning Goals
+
+1. Understand the focus of this **Modern Statistics for Modern Biology** track
+1. Identify components of each tutorial
+1. Practice exploring models by adjusting parameters 
+
+## Objectives for this Track
+
+### Modern Statistics for Modern Biology
+
+> The aim of this book is to enable scientists working in biological research to quickly learn many of the important ideas and methods that they need to make the best of their experiments and of other available data. The book takes a hands-on approach. The narrative in each chapter is driven by classes of questions, or by certain data types. Methods and theory are introduced on a need-to-know basis. We don’t try to systematically deduce from first principles. **The book will often throw readers into the pool** and hope they can swim in spite of so many missing details. [(ref)](http://web.stanford.edu/class/bios221/book/introduction.html)
+
+![](http://web.stanford.edu/class/bios221/book/images/iterativeparadigm.png){width=25%}
+
+```{r question-1}
+question("What is *not* a feature of this track?",
+  answer("Methods and theory"),
+  answer("Deducing from first principles", correct=TRUE),
+  answer("Missing details"),
+  answer("Throwing readers into the pool"),
+  allow_retry = TRUE
+)
+```
+
+### Distributions
+
+Distributions are powerful tools that allow us to understand not only what *can* happen but importantly *how likely* each event is likely to occur.
+
+> In molecular biology, many situations involve counting events: how many codons use a certain spelling, how many reads of DNA match a reference, how many CG digrams are observed in a DNA sequence. These counts give us discrete variables, as opposed to quantities such as mass and intensity that are measured on continuous scales. [(ref)](http://web.stanford.edu/class/bios221/book/Chap-Generative.html)
+
+![](https://youtube.com/watch?v=UdAD2pOalmY){width=75%}
+
+```{r question-2}
+question("What is true about the sum of rolling two die?",
+  answer("Each outcome is equally likely"),
+  answer("There are 11 possible outcomes", correct=TRUE),
+  answer("The probability of getting 3 is 3/36"),
+  answer("Getting a 6 is the most likely outcome"),
+  allow_retry = TRUE
+)
+```
+
+### Simulations
+
+> Simulations play an essential role in this book, as many of the results we need escape the reach of standard analytic approaches. In other words, simulations liberate us from being able to only consider methods that are analytically tractable, and from worrying about the appropriateness of simplifying assumptions or approximations. [(ref)](http://web.stanford.edu/class/bios221/book/introduction.html)
+
+![](https://youtube.com/watch?v=Xcw2tNRiWw8){width=75%}
+
+```{r question-3}
+question("What is *not* a typical step in a simulation?",
+  answer("Identifying possibilities"),
+  answer("Assigning probabilities"),
+  answer("Finding an exact solution", correct=TRUE),
+  answer("Generating multiple outcomes"),
+  allow_retry = TRUE
+)
+```
+
+## Structure of these Tutorials
+
+### Tutorial Design
+
+Each tutorial has three main components:
+
+- Videos
+- Readings
+- Exercises
+
+The table of contents on the left hand side of the screen will show your progress.  You can click on each of the sections to review material.
+
+![](https://rstudioblog.files.wordpress.com/2017/06/learnr-blog-6.png){width=75%}
+
+### Small Groups
+
+You've been grouped with other people sharing similar interests and time commitments.  Importantly, each group has one volunteer **facilitator** who will help schedule online meetings, guide group discussions, and provide feedback to instructors.  
+
+Plan on having at least 1 video conference a week with your group using either:
+
+- [Google Hangouts](https://meet.google.com)
+- [Zoom](https://carnegiescience.zoom.us)
+
+![](https://www.chemedx.org/sites/www.chemedx.org/files/images/blog/lowell-thomson/using-google-hangouts-ipad-and-airserver-online-review-session.jpg){width=75%}
+
+### Slack
+
+Finally, the primary place to communicate and get help will be through the [Carnegie Slack](https://ciwemb.slack.com).  For this track please use the channel:
+
+- `#edu_msmb` -- Discussion forum for the Modern Statistics for Modern Biology
+
+In addition, other channels that may be of interest:
+
+- `#general` -- Topics for the entire department
+- `#code` -- General Unix, R, etc. troubleshooting; requests for software installation
+- `#papers`
+- `#jobs`
+
+![](https://www.youtube.com/watch?v=EYqxQGmQkVw){width=50%}
+
+### Review
+
+```{r question-4}
+question("What is *not* a component of these tutorials?",
+  answer("The free Modern Statistics for Modern Biology book"),
+  answer("Small group video conferences"),
+  answer("In-person meetings", correct=TRUE),
+  answer("Real-time chat over Carnegie Slack"),
+  allow_retry = TRUE
+)
+```
+
+## Videos
+
+### Why R?
+
+![](https://www.youtube.com/watch?v=9kYUGMg_14s)
+
+```{r question-5}
+question("What is *not* a good reason to use R",
+  answer("It's easier to share your work and for others to make suggestions"),
+  answer("People all over the world create free analysis packages"),
+  answer("The data visualization and graphics packages are rich and mature"),
+  answer("It's the only way to analyze data (vs Unix, Python, MatLab)", correct=TRUE),
+  allow_retry = TRUE
+)
+```
+
+### What is RStudio?
+
+![](https://youtube.com/watch?v=n3uue28FD0w)
+
+```{r question-6}
+question("What does the RStudio IDE *not* provide?",
+  answer("Console to interactively run R commands"),
+  answer("Text Editor to write R scripts"),
+  answer("Spreadsheet that let's you edit data like Microsoft Excel", correct=TRUE),
+  answer("Workspace to view data loaded into memory"),
+  allow_retry = TRUE
+)
+```
+
+## Readings
+
+### Preface
+
+For this tutorial we'll read the introduction of Modern Statistics for Modern Biology and then look at a couple of sections from the first chapter to get a sense for what this track will cover.
+
+### Introduction
+
+- [Introduction](http://web.stanford.edu/class/bios221/book/introduction.html)
+    - **NOTE:** You do **not** have to install R or RStudio at this time
+
+```{r question-7}
+question("How is this book organized?",
+  answer("Machine learning, hypothesis testing, statistical models"),
+  answer("Hypothesis testing, machine learning, statistical models"),
+  answer("Hypothesis testing, statistical models, machine learning"),
+  answer("Statistical models, hypothesis testing, machine learning", correct=TRUE),
+  allow_retry = TRUE
+)
+```
+
+### 1.2 A real example
+
+- [1.2 A real example](http://web.stanford.edu/class/bios221/book/Chap-Generative.html#a-real-example)
+
+```{r question-8}
+question("What can the Poisson distribution tell us about a given HIV genome?",
+  answer("The genome length"),
+  answer("What mutations exist"),
+  answer("The chances of seeing 3 mutations", correct=TRUE),
+  answer("Which mutations are deleterious"),
+  allow_retry = TRUE
+)
+```
+
+### 1.3.1 Bernoulli trials
+
+- [1.3.1 Bernoulli trials](http://web.stanford.edu/class/bios221/book/Chap-Generative.html#subs:bernoulli)
+
+```{r question-9}
+question("In the R command `rbinom(15, prob=0.5, size=1)`, what is `prob=0.5`?",
+  answer("A distribution"),
+  answer("An outcome"),
+  answer("A parameter", correct=TRUE),
+  answer("A duck"),
+  allow_retry = TRUE
+)
+```
+
+### 1.3.2 Binomial success counts
+
+- [1.3.2 Binomial success counts](http://web.stanford.edu/class/bios221/book/Chap-Generative.html#subs:binomial)
+
+```{r question-10}
+question("What can *not* be modelled using the binomial distribution?",
+  answer("CpG or non-CpG"),
+  answer("Binding or non-binding"),
+  answer("A, C, G, or T", correct=TRUE),
+  answer("Diseased or healthy"),
+  allow_retry = TRUE
+)
+```
+
+## Exercises
+
+### Preface
+
+In this final section you will play around with some R code to get a taste for experimenting with simulations and parameters.  Don't worry if you don't understand them completely at this point.  The next sets of videos, readings, and exercises will explain these commands in more depth.
+
+```{r question-problem-0}
+question("What is the goal of these exercises?",
+  answer("To see how much you already know"),
+  answer("To give you a taste for experimenting with simulations and parameters", correct=TRUE),
+  answer("To daze and confuse you"),
+  allow_retry = TRUE
+)
+```
+
+### Problem 1: Simulate different percentages of genes that are differentially expressed (1/3) 
+
+Single cell sequencing allows us to identify different groups of cells within a heterogeneous population (which we'll explore briefly in [Chapter 9](http://web.stanford.edu/class/bios221/book/Chap-MultivaHetero.html#sec:findingtime)).  The ability to identify each group is strongly dependent on the number of differentially expressed genes.  The [splatter](http://bioconductor.org/packages/splatter) package attempts to simulate single-cell RNA-seq data using [a model](http://bioconductor.org/packages/release/bioc/vignettes/splatter/inst/doc/splat_params.html), allowing exploration of parameters such as the number of cells in each group, the number of sequencing reads obtained, and importantly for this exercise, the probability that a gene will be differentially expressed.  Understanding the impact of these parameters can help plan experiments.
+
+The code below simulates four groups of cells, each with 10% of the genes differentially expressed.  Each dot on the plot represents a single cell, and the color represents its group.  Note how separated the groups are by PCA.
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+group.prob <- c( 0.25, 0.25, 0.25, 0.25 )
+de.prob <- c( 0.1, 0.1, 0.1, 0.1 )
+
+sim.groups <- splatSimulate( 
+  method="groups", group.prob=group.prob, 
+  de.prob=de.prob, seed=712777
+)
+
+sim.groups <- normalize( sim.groups )
+plotPCA( sim.groups, colour_by="Group" )
+```
+
+### Problem 1: Simulate different percentages of genes that are differentially expressed (2/3) 
+
+The probability that a gene will be differentially expressed for each group is 0.1 (10%) and is defined in 
+
+```{r echo=TRUE, eval=FALSE}
+de.prob <- c( 0.1, 0.1, 0.1, 0.1 )
+```
+
+Note that the order of the probabilities in this command corresponds to the order in the legend (i.e. if you change the first, this will affect the `Group 1` blue dots).
+
+Change one of the `0.1` to `0.2` (from 10% to 20%) and click `Run Code` to see the effect e.g.
+
+```{r echo=TRUE, eval=FALSE}
+de.prob <- c( 0.1, 0.1, 0.1, 0.2 )
+```
+
+If something goes wrong, you can click `Start Over` to reset the code.
+
+```{r problem-1, exercise=TRUE, exercise.eval=FALSE, message=FALSE, warning=FALSE}
+group.prob <- c( 0.25, 0.25, 0.25, 0.25 )
+de.prob <- c( 0.1, 0.1, 0.1, 0.1 )
+
+sim.groups <- splatSimulate( 
+  method="groups", group.prob=group.prob, 
+  de.prob=de.prob, seed=712777
+)
+
+sim.groups <- normalize( sim.groups )
+plotPCA( sim.groups, colour_by="Group" )
+```
+
+```{r question-problem-1}
+question("Which values for `de.prob` gives the *below* plot?",
+  answer("`de.prob <- c( 0.1, 0.1, 0.1, 0.2 )`"),
+  answer("`de.prob <- c( 0.1, 0.2, 0.1, 0.2 )`"),
+  answer("`de.prob <- c( 0.2, 0.2, 0.2, 0.2 )`", correct=TRUE),
+  answer("`de.prob <- c( 0.05, 0.05, 0.05, 0.05 )`"),
+  allow_retry = TRUE
+)
+```
+
+![](https://drive.google.com/uc?id=1yasy-rCIBYYU7tnFXtLLgZxS2SlYZ1js){width=75%}
+
+### Problem 1: Simulate different percentages of genes that are differentially expressed (3/3) 
+
+Remember that these exercises are here to give you an idea of the topics in this track rather than a thorough explanation.  That being said, here are some things you may have noticed (feel free to speculate in your **small groups** and in **Slack**!)
+
+- How does `splatSimulate()` work?
+- Why are the results the same each time?
+- How can this simulation be useful?
+- Why doesn't `de.prob <- c( 0.2, 0.1, 0.1, 0.2 )` produce that plot?
+
+### Problem 2: See how many of the highest variable genes are needed to get separation using PCA (1/2)
+
+Many Bioconductor packages provide a PCA function to visualize high dimensional data (principal component analysis, which we'll explore in [Chapter 7](http://web.stanford.edu/class/bios221/book/Chap-Multivariate.html#dimension-reduction)).  One common parameter is `ntop` which DESeq2 explains is used to set the "number of top genes to use for principal components, selected by highest row variance" [ref](http://bioconductor.org/packages/release/bioc/manuals/DESeq2/man/DESeq2.pdf).
+
+The code below performs PCA on the previously simulated single cell data. Note how separated the groups are when `nGenes <- 50`.
+
+```{r echo=TRUE}
+nGenes <- 50
+
+rv <- rowVars( logcounts(sim.groups) )
+o <- order( rv, decreasing=TRUE )
+top_genes <- logcounts(sim.groups)[o[1:nGenes],]
+
+pca <- prcomp( t(top_genes) )
+
+groups <- colData(sim.groups)$Group
+ggplot( data.frame( pca$x ) ) +
+  geom_point( aes( PC1, PC2, color=groups ) )
+```
+
+### Problem 2: See how many of the highest variable genes are needed to get separation using PCA (2/2)
+
+Now change the number of highly variable genes that are used to separate one cell from another by changing `nGenes` to `100` e.g.
+
+```{r echo=TRUE, eval=FALSE}
+nGenes <- 100
+```
+
+Try different values between 2 and 10000 and note how separated each group is from the other groups.
+
+```{r problem-2, exercise=TRUE, exercise.eval=FALSE}
+nGenes <- 50
+
+rv <- rowVars( logcounts(sim.groups) )
+o <- order( rv, decreasing=TRUE )
+top_genes <- logcounts(sim.groups)[o[1:nGenes],]
+
+pca <- prcomp( t(top_genes) )
+
+groups <- colData(sim.groups)$Group
+ggplot( data.frame( pca$x ) ) +
+  geom_point( aes( PC1, PC2, color=groups ) )
+```
+
+```{r question-problem-2}
+question("What value of `nGenes` gene most closely matches the *below* plot?",
+  answer("50"),
+  answer("100"),
+  answer("500", correct=TRUE),
+  answer("1000"),
+  allow_retry = TRUE
+)
+```
+
+![](https://drive.google.com/uc?id=1NWlA6-lQPBGCV0Ndlpr185FyTFXbeFH6){width=75%}
+
+## Wrap-up
+
+### Summary
+
+In this tutorial we:
+
+1. Outlined the objectives for this track
+    - Learn ideas and methods in spite of missing details
+    - Understand which distributions capture the essense of an experiment
+    - Simulate data to analyze complex problems
+1. Discussed the structure of these tutorials
+    - Videos, readings, and exercises
+    - Small groups meeting via video conferences
+    - Primary communicate via Slack
+1. Practiced experimenting with simulations and parameters
+    - Simulated single cell data with varying amounts of differentailly expressed genes
+    - Examined how sensitive PCA is to the "number of top genes" parameter
+
+### What's Next
+
+- Say hello in Slack
+- Video conference with your small group
+- Monitor Slack for the next tutorial
+
