@@ -1,0 +1,357 @@
+---
+title: "Introduction to R for Data Science"
+output:
+  learnr::tutorial:
+    progressive: true
+    version: 1.0
+subtitle: |
+  | ![](https://raw.githubusercontent.com/C-MOOR/rnaseq/master/assets/styling/cmoor_logo_notext.png){width=60%}
+  | [Get Help](https://ciwemb.slack.com)
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+
+tutorial_options(exercise.completion=TRUE)
+knitr::opts_chunk$set(echo = FALSE)
+options(scipen=5)
+
+df <- read_tsv( "https://raw.githubusercontent.com/cutsort/shiny/master/data/test-driveR.tsv" )
+df_long <- pivot_longer( df, 3:9, names_to="region", values_to="count" )
+```
+
+```{r}
+# Extract the tutorial version from the YAML data and store it so we can print it using inline r code below.  This can't be done directly inline because the code for extracting the YAML data uses backticks
+tv <- rmarkdown::metadata$output$`learnr::tutorial`$version
+```
+
+## Welcome! {.splashpage}
+
+### Introduction: R for Data Science (version `r tv`)
+
+This tutorial introduces the **R for Data Science** online learning track that teaches how to do data science with R.  Based on the free [R for Data Science](https://r4ds.had.co.nz) website, this track focuses on the popular [tidyverse](https://www.tidyverse.org), a collection of opinionated tools that "share an underlying design philosophy, grammar, and data structures."  Today you will see how the curriculum is organized and whether this is the right track for you.  In the next tutorial you will begin your hands-on R, RStudio, and R Notebooks learning.
+
+![](https://d33wubrfki0l68.cloudfront.net/b88ef926a004b0fce72b2526b0b5c4413666a4cb/24a30/cover.png){width=20%}
+
+#### Authors:
+
+* [Katherine Cox](https://c-moor.github.io/portfolio/coxkatherine/)
+* Frederick Tan
+
+### Learning Goals
+
+1. Understand the focus of this **R for Data Science** track
+1. Identify components of each tutorial
+1. Practice exploring data using `tidyverse`
+
+## Objectives for this Track
+
+### R for Data Science
+
+> This book will teach you how to do data science with R: You’ll learn how to get your data into R, get it into the most useful structure, transform it, visualise it and model it. In this book, you will find a practicum of skills for data science. [(ref)](https://r4ds.had.co.nz)
+
+![](https://d33wubrfki0l68.cloudfront.net/571b056757d68e6df81a3e3853f54d3c76ad6efc/32d37/diagrams/data-science.png)
+
+```{r question-1}
+question("What will you learn in this track?",
+  answer("How to analyze RNA-seq data starting with raw sequencing data"),
+  answer("How count-based statistics are used in RNA-seq analysis"),
+  answer("How to do many of the things that can be done in Excel", correct=TRUE),
+  answer("How to take over the world"),
+  allow_retry = TRUE
+)
+```
+
+### Exploratory Data Anlysis
+
+The track starts with data visualization "because the payoff is so clear: you get to make elegant and informative plots that help you understand data."  Thus, these tutorials will
+
+> get you up to speed with the basic tools of data exploration as quickly as possible. Data exploration is the art of looking at your data, rapidly generating hypotheses, quickly testing them, then repeating again and again and again. The goal of data exploration is to generate many promising leads that you can later explore in more depth. [(ref)](https://r4ds.had.co.nz/explore-intro.html)
+
+Below is a [DataCamp](https://www.datacamp.com) video introducing data visualization.  While this video is for a different course, it provides nice examples of how visualizing data can provide insights that you might otherwise miss.
+
+![](https://youtube.com/watch?v=YxKr2a-Y1WE){width=75%}
+
+```{r question-2}
+question("What will we *not* spend a lot of time on?",
+  answer("Visualizing data"),
+  answer("Communicating results"),
+  answer("Performing statistical tests", correct=TRUE),
+  answer("Exploring different datasets"),
+  allow_retry = TRUE
+)
+```
+
+### Rectangular Data
+
+> This book focuses exclusively on rectangular data: collections of values that are each associated with a variable and an observation. There are lots of datasets that do not naturally fit in this paradigm: including images, sounds, trees, and text. But rectangular data frames are extremely common in science and industry, and we believe that they are a great place to start your data science journey. [(ref)](https://r4ds.had.co.nz/introduction.html#non-rectangular-data)
+
+```{r question-3}
+question("What kind of data will we learn to analyze?",
+  answer("Raw sequencing data"),
+  answer("Every kind of data found in an Excel spreadsheet"),
+  answer("Only rectangular data where every column has the same number of rows", correct=TRUE),
+  allow_retry = TRUE
+)
+```
+
+## Structure of these Tutorials
+
+### Tutorial Design
+
+Each tutorial has three main components:
+
+- Videos
+- Readings
+- Exercises
+
+The table of contents on the left hand side of the screen will show your progress.  You can click on each of the sections to review material.
+
+![](https://rstudioblog.files.wordpress.com/2017/06/learnr-blog-6.png){width=75%}
+
+### Small Groups
+
+You've been grouped with other people sharing similar interests and time commitments.  Importantly, each group has one volunteer **facilitator** who will help schedule online meetings, guide group discussions, and provide feedback to instructors.  
+
+Plan on having at least 1 video conference a week with your group using either:
+
+- [Google Hangouts](https://meet.google.com)
+- [Zoom](https://carnegiescience.zoom.us)
+
+![](https://www.chemedx.org/sites/www.chemedx.org/files/images/blog/lowell-thomson/using-google-hangouts-ipad-and-airserver-online-review-session.jpg){width=75%}
+
+### Slack
+
+Finally, the primary place to communicate and get help will be through the [Carnegie Slack](https://ciwemb.slack.com).  For this track please use the channel:
+
+- `#edu_r4ds` -- Discussion forum for the R for Data Science track
+
+In addition, other channels that may be of interest:
+
+- `#general` -- Topics for the entire department
+- `#code` -- General Unix, R, etc. troubleshooting; requests for software installation
+- `#papers`
+- `#jobs`
+
+![](https://www.youtube.com/watch?v=EYqxQGmQkVw){width=50%}
+
+### Review
+
+```{r question-4}
+question("What is *not* a component of these tutorials?",
+  answer("The free R for Data Science book"),
+  answer("Small group video conferences"),
+  answer("In-person meetings", correct=TRUE),
+  answer("Real-time chat over Carnegie Slack"),
+  allow_retry = TRUE
+)
+```
+
+## Videos
+
+### Why R?
+
+![](https://www.youtube.com/watch?v=9kYUGMg_14s)
+
+```{r question-5}
+question("What is *not* a good reason to use R",
+  answer("It's easier to share your work and for others to make suggestions"),
+  answer("People all over the world create free analysis packages"),
+  answer("The data visualization and graphics packages are rich and mature"),
+  answer("It's the only way to analyze data (vs Unix, Python, MatLab)", correct=TRUE),
+  allow_retry = TRUE
+)
+```
+
+### What is RStudio?
+
+![](https://youtube.com/watch?v=n3uue28FD0w)
+
+```{r question-6}
+question("What does the RStudio IDE *not* provide?",
+  answer("Console to interactively run R commands"),
+  answer("Text Editor to write R scripts"),
+  answer("Spreadsheet that let's you edit data like Microsoft Excel", correct=TRUE),
+  answer("Workspace to view data loaded into memory"),
+  allow_retry = TRUE
+)
+```
+
+## Readings
+
+### Chapter 1 Introduction
+
+- [Chapter 1 Introduction](https://r4ds.had.co.nz/introduction.html)
+    - **NOTE:** You do **not** have to install R or RStudio at this time
+
+```{r question-7}
+question("How is this book organized?",
+  answer("Importing, Transforming, Visualizing"),
+  answer("Importing, Visualizing, Transforming"),
+  answer("Transforming, Visualizing, Importing"),
+  answer("Visualizing, Transforming, Importing", correct=TRUE),
+  allow_retry = TRUE
+)
+```
+
+## Exercises
+
+### Preface
+
+In this final section we will introduce you to a real world (rectangular) dataset and then you will work through three exercises to give you a taste of some useful commands. Don't worry if you don't understand them completely at this point.  The next sets of videos, readings, and exercises will explain these commands in more depth.
+
+```{r question-problem-0}
+question("What is the goal of these exercises?",
+  answer("To see how much you already know"),
+  answer("To give you a taste of some useful commands", correct=TRUE),
+  answer("To daze and confuse you"),
+  allow_retry = TRUE
+)
+```
+
+### Dataset: Marianes and Spradling, 2013 (1/2)
+
+Now that you've learnt a little about R and data science, let's get some practice!  We'll explore data from [Marianes and Spradling, 2013](https://elifesciences.org/articles/00886) which found ten distinct subregions along the anterior-posterior axis of the *Drosophila* midgut.
+
+![](https://raw.githubusercontent.com/C-MOOR/rnaseq/master/assets/images/elife-00886-fig2A.jpg){width=100%}
+
+### Dataset: Marianes and Spradling, 2013 (2/2)
+
+RNA-seq analysis of these subregions revealed differential "expression of hundreds of genes with likely tissue functions."
+
+![](https://raw.githubusercontent.com/C-MOOR/rnaseq/master/assets/images/elife-00886-fig2D.jpg){width=100%}
+
+### Problem 1: Sort genes based on read counts (1/2)
+
+This `arrange()` command arranges genes based on read counts in region `a1` (in descending order thanks to the `desc()` function).  `Amy-p` is an amylase gene that has the 10th highest read counts in `a1`.
+
+```{r, echo=TRUE}
+arrange( df, desc( a1 ) )
+```
+
+### Problem 1: Sort genes based on read counts (2/2)
+
+Now it's your turn to sort the genes!  To arrange the genes based on read counts in region `Cu`:
+
+- Modify this command and replace `a1` with `Cu` (case sensitive)
+- Click `Run Code`
+
+```{r problem-1, exercise=TRUE, exercise.eval=FALSE}
+arrange( df, desc( a1 ) )
+```
+
+```{r question-problem-1}
+question("What gene has the highest read count in Cu?",
+  answer("Amy-p"),
+  answer("Vha16-1", correct=TRUE),
+  answer("CG12374"),
+  allow_retry = TRUE
+)
+```
+
+### Problem 2: Extract genes of interest (1/2)
+
+Peptidoglycan recognition proteins (PGRPs) are key components of the innate immune system and mediate interactions between the host and gut microbiome.  This `filter()` command filters for any row where the `gene_name` contains `PGRP` (thanks to the `str_detect()` function).
+
+```{r, echo=TRUE}
+filter( df, str_detect( gene_name, "PGRP" ) )
+```
+
+### Problem 2: Extract genes of interest (2/2)
+
+Now it's your turn to filter the genes!  This simpler command filters for rows where `gene_name` is exactly `lab`, a homeobox transcription factor highly expressed in the `Cu` region involved in copper cell differentiation.
+
+```{r, echo=TRUE}
+filter( df, gene_name == "lab" )
+```
+
+Note that here we use the simpler construct `gene_name == "lab"` to filter for any row where `gene_name` is **exactly** equal to `lab`.
+
+To examine the regional expression of the acyl transferase `CG3106`:
+
+- Modify this command and replace `lab` with `CG3106`
+- Click `Run Code`
+
+```{r problem-2, exercise=TRUE, exercise.eval=FALSE}
+filter( df, gene_name == "lab" )
+```
+
+```{r question-problem-2}
+question("What region has the highest expression of `CG3106`?",
+  answer("a1"),
+  answer("Cu"),
+  answer("p1", correct=TRUE),
+  allow_retry = TRUE
+)
+```
+
+### Problem 3: Plot genes across regions (1/2)
+
+Finally, let's visualize the regional expression of two genes along the anterior-posterior axis using a bar plot.  We'll dive deeper into this `ggplot()` command in the next tutorial.
+
+```{r, echo=TRUE}
+goi <- c( "lab", "CG3106" )
+
+ggplot( filter( df_long, gene_name %in% goi ) ) +
+    geom_bar( aes( region, count, fill=region ), stat="identity" ) +
+    facet_wrap( ~ gene_name, scales="free_y" )
+```
+
+### Problem 3: Plot genes across regions (2/2)
+
+Now it's your turn to add more genes to this plot!  Try this by adding another gene to the `goi` list (`goi` for "genes of interest").  For example, to also plot `PGRP-SC1b` add `, "PGRP-SC1b"` e.g.
+
+- `goi <- c( "lab", "CG3106", "PGRP-SC1b" )`
+
+Importantly, note that:
+
+- Gene names need to be surrounded by double quotes (`"`PGRP-SC1b`"`)
+- R is case sensitive (e.g. "PGRP-SC1`b`" not "PGRP-SC1`B`")
+- A comma in required between each gene ("CG3106"`,` "PGRP-SC1b")
+
+Other genes to try are: `PGRP-SC1b`, `PGRP-SC2`, `betaTry`, and `Gal`
+
+```{r problem-3, exercise=TRUE, exercise.eval=FALSE}
+goi <- c( "lab", "CG3106" )
+
+ggplot( filter( df_long, gene_name %in% goi ) ) +
+    geom_bar( aes( region, count, fill=region ), stat="identity" ) +
+    facet_wrap( ~ gene_name, scales="free_y" )
+```
+
+```{r question-problem-3}
+question("Which gene has the most total read counts across all regions?",
+  answer("lab"),
+  answer("CG3106", correct=TRUE),
+  answer("PGRP-SC1b"),
+  allow_retry = TRUE
+)
+```
+
+## Wrap-up
+
+### Summary
+
+In this tutorial we:
+
+1. Outlined the objectives for this track
+    - Learn how to use R to do many of the things that can be done in Excel
+    - Conduct exploratory data analysis, starting with data visualization
+    - Focus exclusively on rectangular data where every column has the same number of rows
+1. Discussed the structure of these tutorials
+    - Videos, readings, and exercises
+    - Small groups meeting via video conferences
+    - Primary communicate via Slack
+1. Practiced exploring data using `tidyverse`
+    - Sorted genes using `arrange()`
+    - Extracted genes using `filter()`
+    - Plotted genes using `ggplot()`
+
+### What's Next
+
+- Say hello in Slack
+- Video conference with your small group
+- Monitor Slack for the next tutorial
+
