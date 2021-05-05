@@ -18,7 +18,7 @@ tutorial_options(exercise.completion=TRUE)
 knitr::opts_chunk$set(echo = FALSE)
 options(scipen=5)
 
-url <- "https://github.com/opencasestudies/ocs-bp-diet/raw/master/docs/dietary_risk_exposure_sep_ages_2017.csv"
+url <- "https://github.com/opencasestudies/ocs-bp-diet/blob/master/data/raw/dietary_risk_exposure_sep_ages_2017.csv?raw=true"
 df_diet <- read_csv( url ) %>%
   select( location=location_name, food=rei_name, age=age_group_name, sex, mean, unit ) %>%
   mutate( food = str_remove( food, "Diet low in |Diet high in " ) )
