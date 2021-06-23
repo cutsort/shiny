@@ -118,7 +118,7 @@ You've been grouped with other people sharing similar interests and time commitm
 Plan on having at least 1 video conference a week with your group using either:
 
 - [Google Hangouts](https://meet.google.com)
-- [Zoom](https://carnegiescience.zoom.us)
+- [Zoom](https://zoom.us)
 
 ![](https://www.chemedx.org/sites/www.chemedx.org/files/images/blog/lowell-thomson/using-google-hangouts-ipad-and-airserver-online-review-session.jpg){width=75%}
 
