@@ -6,7 +6,7 @@ output:
     version: 1.0
 subtitle: |
   | ![](https://raw.githubusercontent.com/C-MOOR/rnaseq/master/assets/styling/cmoor_logo_notext.png){width=60%}
-  | [Get Help](https://ciwemb.slack.com)
+  | [Get Help](https://c-moor.slack.com)
 runtime: shiny_prerendered
 ---
 
@@ -124,7 +124,7 @@ Plan on having at least 1 video conference a week with your group using either:
 
 ### Slack
 
-Finally, the primary place to communicate and get help will be through the [Carnegie Slack](https://ciwemb.slack.com).  For this track please use the channel:
+Finally, the primary place to communicate and get help will be through [Slack](https://c-moor.slack.com).  For this track please use the channel:
 
 - `#edu_r4ds` -- Discussion forum for the R for Data Science track
 
@@ -144,7 +144,7 @@ question("What is *not* a component of these tutorials?",
   answer("The free R for Data Science book"),
   answer("Small group video conferences"),
   answer("In-person meetings", correct=TRUE),
-  answer("Real-time chat over Carnegie Slack"),
+  answer("Real-time chat over Slack"),
   allow_retry = TRUE
 )
 ```
